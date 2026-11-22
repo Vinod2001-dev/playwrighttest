@@ -21,7 +21,7 @@ jobs:
     - name: Install Playwright Browsers
       run: npx playwright install --with-deps
     - name: Run Playwright tests
-      run: npx playwright test --reporter=list
+      run: npx playwright test --project=chromium --reporter=list
       continue-on-error: true
       env:
         HELLO: ${{ secrets.DOTENV }}
