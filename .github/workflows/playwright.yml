@@ -23,12 +23,12 @@ jobs:
       run: npx playwright test --reporter=html
       continue-on-error: true
       env:
-        HELLO:${{ secrets.DOTENV }}
-        OPENAI_API_KEY:${{ secrets.OPENAI_API_KEY }}
-        USERNAME:${{ secrets.USERNAME }}
-        PASSWORD:${{ secrets.PASSWORD }}
-        USERNAME_SAUCE:${{ secrets.USERNAME_SAUCE }}
-        PASSWORD_SAUCE:${{ secrets.PASSWORD_SAUCE }}
+        HELLO: ${{ secrets.DOTENV }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        USERNAME: ${{ secrets.USERNAME }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        USERNAME_SAUCE: ${{ secrets.USERNAME_SAUCE }}
+        PASSWORD_SAUCE: ${{ secrets.PASSWORD_SAUCE }}
     - uses: actions/upload-artifact@v4
       if: ${{ !cancelled() }}
       with:
