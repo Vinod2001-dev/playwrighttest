@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
-
+test.beforeEach(async ({ page }) => {
+    console.log('Starting test: ' + test.info().title);
+});
 test('Assertions Demo', async ({ page }) => {
   await page.goto('https://kitchen.applitools.com/');
   await page.pause();

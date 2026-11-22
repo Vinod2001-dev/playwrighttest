@@ -1,6 +1,9 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+    console.log('Starting test: ' + test.info().title);
+});
 test('has title', async ({ page }) => {
   await page.goto('https://www.saucedemo.com/');
   // SauceDemo's page title is "Swag Labs".

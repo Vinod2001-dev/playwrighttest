@@ -5,7 +5,9 @@ import { test, expect } from '@playwright/test';
 const username = process.env.USERNAME_SAUCE;
 const password = process.env.PASSWORD_SAUCE;
 
+
 test.beforeEach(async ({ page }) => {
+  console.log('Starting test: ' + test.info().title);
   await page.goto('https://www.saucedemo.com/');
 });
 

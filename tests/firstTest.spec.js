@@ -3,6 +3,7 @@ const { test, expect } = require('@playwright/test');
 // Beginner examples: https://playwright.dev/docs/locators
 test.describe('Working with links', () => {
 	test.beforeEach(async ({ page }) => {
+		console.log('Starting test: ' + test.info().title);	
 		await page.goto('https://playwright.dev/');
 	});
 
