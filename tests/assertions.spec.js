@@ -1,33 +1,26 @@
 import { test, expect } from '@playwright/test';
+
 test.beforeEach(async ({ page }) => {
-    console.log('Starting test: ' + test.info().title);
+  console.log('Starting test: ' + test.info().title);
 });
+
 test('Assertions Demo', async ({ page }) => {
-  await page.goto('https://kitchen.applitools.com/');
-  await page.pause();
+  await page.setContent(`
+    <button onclick="alert('Alert message')">Trigger an Alert</button>
+    <button onclick="confirm('Confirmation message')">Trigger a Confirmation</button>
+    <button onclick="prompt('Prompt message')">Trigger a Prompt</button>
+  `);
 
-  await page.getByRole('img', { name: 'Chefs with code ingredients' }).click();
-  await page.getByText('A pantry full of web').click();
-  await page.getByRole('link', { name: 'Alert' }).click();
-
-  // ✅ Handle alert BEFORE clicking
-  page.once('dialog', dialog => {
-    console.log(`Dialog message: ${dialog.message()}`);
-    dialog.dismiss().catch(() => {});
-  });
-  await page.getByRole('button', { name: 'Trigger an Alert' }).click();
-
-  // ✅ Handle confirmation BEFORE clicking
-  page.once('dialog', dialog => {
-    console.log(`Dialog message: ${dialog.message()}`);
-    dialog.dismiss().catch(() => {});
-  });
-  await page.getByRole('button', { name: 'Trigger a Confirmation' }).click();
-
-  // ✅ Handle prompt BEFORE clicking
-  page.once('dialog', dialog => {
-    console.log(`Dialog message: ${dialog.message()}`);
-    dialog.dismiss().catch(() => {});
-  });
-  await page.getByRole('button', { name: 'Trigger a Prompt' }).click();
+  await triggerDialog(page, 'Trigger an Alert', 'Alert message');
+  await triggerDialog(page, 'Trigger a Confirmation', 'Confirmation message');
+  await triggerDialog(page, 'Trigger a Prompt', 'Prompt message');
 });
+
+async function triggerDialog(page, buttonName, expectedMessage) {
+  const dialogPromise = page.waitForEvent('dialog');
+  const clickPromise = page.getByRole('button', { name: buttonName }).click();
+  const dialog = await dialogPromise;
+  expect(dialog.message()).toBe(expectedMessage);
+  await dialog.dismiss();
+  await clickPromise;
+}

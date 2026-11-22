@@ -1,9 +1,8 @@
 
-import 'dotenv/config';
 import { test, expect } from '@playwright/test';
 
-const username = process.env.USERNAME_SAUCE;
-const password = process.env.PASSWORD_SAUCE;
+const username = process.env.USERNAME_SAUCE || 'standard_user';
+const password = process.env.PASSWORD_SAUCE || 'secret_sauce';
 
 
 test.beforeEach(async ({ page }) => {

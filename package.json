@@ -1,9 +1,12 @@
 {
   "name": "playwright-testing",
   "version": "1.0.0",
-  "description": "",
+  "description": "Playwright browser tests",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "test:report": "playwright show-report"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

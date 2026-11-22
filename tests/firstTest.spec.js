@@ -34,16 +34,15 @@ test.describe('Working with links', () => {
 		await expect(page.getByRole('heading', { name: /Installation/i })).toBeVisible();
 	});
 
-	test('6 - open a link in a new tab', async ({ page, context }) => {
-		const apiLink = page.getByRole('link', { name: 'API' }).first();
+	test('6 - open a link in a new tab', async ({ page }) => {
+		await page.setContent('<a href="about:blank" target="_blank">Open a new tab</a>');
 
-		const newPagePromise = context.waitForEvent('page');
-		await apiLink.click({ modifiers: ['Control'] });
-		const newPage = await newPagePromise;
+		const popupPromise = page.waitForEvent('popup');
+		await page.getByRole('link', { name: 'Open a new tab' }).click();
+		const popup = await popupPromise;
 
-		await newPage.waitForLoadState();
-		await expect(newPage).toHaveURL(/.*\/docs\/api\/class-playwright/);
-		await newPage.close();
+		await expect(popup).toHaveURL('about:blank');
+		await popup.close();
 	});
 
 	test('7 - open a link with the keyboard', async ({ page }) => {
