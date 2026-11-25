@@ -151,5 +151,43 @@ test.describe('OrangeHRM Login - Test Cases', () => {
     await expect(page).toHaveURL(/.*auth\/login/);
   });
 
+  // 16. Form State - Clearing Username and Password
+  test('TC16: Username and password fields can be cleared', async ({ page }) => {
+    const username = page.getByRole('textbox', { name: 'Username' });
+    const password = page.getByRole('textbox', { name: 'Password' });
+
+    await username.fill('Admin');
+    await password.fill('admin123');
+    await username.clear();
+    await password.clear();
+
+    await expect(username).toHaveValue('');
+    await expect(password).toHaveValue('');
+  });
+
+  // 17. Form State - Required Validation After Input Is Cleared
+  test('TC17: Required validation appears after clearing a completed field', async ({ page }) => {
+    const username = page.getByRole('textbox', { name: 'Username' });
+    const password = page.getByRole('textbox', { name: 'Password' });
+
+    await username.fill('Admin');
+    await password.fill('admin123');
+    await username.clear();
+    await page.getByRole('button', { name: 'Login' }).click();
+
+    await expect(page.getByText('Required')).toHaveCount(1);
+  });
+
+  // 18. Navigation - Reset Password Cancel Returns to Login
+  test('TC18: Canceling password reset returns to the login page', async ({ page }) => {
+    await page.getByText('Forgot your password?').click();
+    await expect(page).toHaveURL(/.*requestPasswordResetCode/);
+
+    await page.getByRole('button', { name: 'Cancel' }).click();
+
+    await expect(page).toHaveURL(/.*auth\/login/);
+    await expect(page.getByRole('button', { name: 'Login' })).toBeVisible();
+  });
+
 });
 
