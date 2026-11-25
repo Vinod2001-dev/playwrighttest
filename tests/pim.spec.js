@@ -1,12 +1,15 @@
 import { test, expect } from '@playwright/test';
 
+const orangeHrmUsername = process.env.ORANGEHRM_USERNAME || 'Admin';
+const orangeHrmPassword = process.env.ORANGEHRM_PASSWORD || 'admin123';
+
 test('test', async ({ page }) => {
   await page.goto('/web/index.php/auth/login');
   await expect(page.getByRole('textbox', { name: 'Username' })).toBeVisible({timeout: 40000});
   await page.getByRole('textbox', { name: 'Username' }).click();
-  await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
+  await page.getByRole('textbox', { name: 'Username' }).fill(orangeHrmUsername);
   await page.getByRole('textbox', { name: 'Password' }).click();
-  await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+  await page.getByRole('textbox', { name: 'Password' }).fill(orangeHrmPassword);
   await page.getByRole('button', { name: 'Login' }).click();
   await page.getByRole('link', { name: 'PIM' }).click();
   await page.getByRole('textbox', { name: 'Type for hints...' }).first().click();

@@ -182,9 +182,13 @@ CI installs Node.js dependencies and Playwright browsers, runs the complete test
 
 DemoQA form values are maintained in [`testdata/demoqa.json`](testdata/demoqa.json). Update this JSON file to change the submitted name, email, and addresses.
 
-OrangeHRM demo credentials used by the tests are:
+OrangeHRM and SauceDemo credentials can be set in the ignored local `.env` file:
 
-```text
-Username: Admin
-Password: admin123
+```env
+ORANGEHRM_USERNAME=Admin
+ORANGEHRM_PASSWORD=admin123
+USERNAME_SAUCE=standard_user
+PASSWORD_SAUCE=secret_sauce
 ```
+
+The OrangeHRM tests use the environment values when set and otherwise default to the demo credentials shown above. SauceDemo tests likewise use their environment values or the default demo account.

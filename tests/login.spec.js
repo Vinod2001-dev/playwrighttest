@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+const orangeHrmUsername = process.env.ORANGEHRM_USERNAME || 'Admin';
+const orangeHrmPassword = process.env.ORANGEHRM_PASSWORD || 'admin123';
 
 const LOGIN_URL = '/web/index.php/auth/login';
 
@@ -11,8 +13,8 @@ test.describe('OrangeHRM Login - Test Cases', () => {
 
   // 1. Positive Login & Logout
   test('TC01: Valid username and valid password login', async ({ page }) => {
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+    await page.getByRole('textbox', { name: 'Username' }).fill(orangeHrmUsername);
+    await page.getByRole('textbox', { name: 'Password' }).fill(orangeHrmPassword);
     await page.getByRole('button', { name: 'Login' }).click();
 
     await expect(page).toHaveURL(/.*dashboard/);
@@ -22,7 +24,7 @@ test.describe('OrangeHRM Login - Test Cases', () => {
   // 2. Negative - Wrong Username
   test('TC02: Invalid username and valid password', async ({ page }) => {
     await page.getByRole('textbox', { name: 'Username' }).fill('WrongAdmin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+    await page.getByRole('textbox', { name: 'Password' }).fill(orangeHrmPassword);
     await page.getByRole('button', { name: 'Login' }).click();
 
     await expect(page.getByText('Invalid credentials')).toBeVisible();
@@ -30,7 +32,7 @@ test.describe('OrangeHRM Login - Test Cases', () => {
 
   // 3. Negative - Wrong Password
   test('TC03: Valid username and invalid password', async ({ page }) => {
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
+    await page.getByRole('textbox', { name: 'Username' }).fill(orangeHrmUsername);
     await page.getByRole('textbox', { name: 'Password' }).fill('wrongpass123');
     await page.getByRole('button', { name: 'Login' }).click();
 
@@ -56,7 +58,7 @@ test.describe('OrangeHRM Login - Test Cases', () => {
 
   // 6. Validation - Blank Username Only
   test('TC06: Blank username and valid password', async ({ page }) => {
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+    await page.getByRole('textbox', { name: 'Password' }).fill(orangeHrmPassword);
     await page.getByRole('button', { name: 'Login' }).click();
 
     await expect(page.getByText('Required')).toHaveCount(1);
@@ -64,7 +66,7 @@ test.describe('OrangeHRM Login - Test Cases', () => {
 
   // 7. Validation - Blank Password Only
   test('TC07: Valid username and blank password', async ({ page }) => {
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
+    await page.getByRole('textbox', { name: 'Username' }).fill(orangeHrmUsername);
     await page.getByRole('button', { name: 'Login' }).click();
 
     await expect(page.getByText('Required')).toHaveCount(1);
@@ -72,8 +74,8 @@ test.describe('OrangeHRM Login - Test Cases', () => {
 
   // 8. Case Sensitivity - Username
   test('TC08: Case-insensitive username check (lowercase admin)', async ({ page }) => {
-    await page.getByRole('textbox', { name: 'Username' }).fill('admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+    await page.getByRole('textbox', { name: 'Username' }).fill(orangeHrmUsername.toLowerCase());
+    await page.getByRole('textbox', { name: 'Password' }).fill(orangeHrmPassword);
     await page.getByRole('button', { name: 'Login' }).click();
 
     // OrangeHRM usernames are case-insensitive, so login succeeds
@@ -82,8 +84,8 @@ test.describe('OrangeHRM Login - Test Cases', () => {
 
   // 9. Case Sensitivity - Password
   test('TC09: Case-sensitive password check (uppercase ADMIN123)', async ({ page }) => {
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('ADMIN123');
+    await page.getByRole('textbox', { name: 'Username' }).fill(orangeHrmUsername);
+    await page.getByRole('textbox', { name: 'Password' }).fill(orangeHrmPassword.toUpperCase());
     await page.getByRole('button', { name: 'Login' }).click();
 
     // Passwords are strictly case-sensitive
@@ -92,8 +94,8 @@ test.describe('OrangeHRM Login - Test Cases', () => {
 
   // 10. Whitespace Handling
   test('TC10: Leading and trailing spaces in username and password', async ({ page }) => {
-    await page.getByRole('textbox', { name: 'Username' }).fill('  Admin  ');
-    await page.getByRole('textbox', { name: 'Password' }).fill('  admin123  ');
+    await page.getByRole('textbox', { name: 'Username' }).fill(`  ${orangeHrmUsername}  `);
+    await page.getByRole('textbox', { name: 'Password' }).fill(`  ${orangeHrmPassword}  `);
     await page.getByRole('button', { name: 'Login' }).click();
 
     await expect(page.getByText('Invalid credentials')).toBeVisible();
@@ -112,15 +114,15 @@ test.describe('OrangeHRM Login - Test Cases', () => {
   // 12. Security - Password Masking
   test('TC12: Password field masks characters by default', async ({ page }) => {
     const passwordInput = page.getByRole('textbox', { name: 'Password' });
-    await passwordInput.fill('admin123');
+    await passwordInput.fill(orangeHrmPassword);
 
     await expect(passwordInput).toHaveAttribute('type', 'password');
   });
 
   // 13. Keyboard Accessibility - Enter Key Submit
   test('TC13: Submit login form by pressing Enter key', async ({ page }) => {
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+    await page.getByRole('textbox', { name: 'Username' }).fill(orangeHrmUsername);
+    await page.getByRole('textbox', { name: 'Password' }).fill(orangeHrmPassword);
     await page.getByRole('textbox', { name: 'Password' }).press('Enter');
 
     await expect(page).toHaveURL(/.*dashboard/);
@@ -136,8 +138,8 @@ test.describe('OrangeHRM Login - Test Cases', () => {
 
   // 15. Session Management - Logout and Browser Back Button
   test('TC15: Logout ends session and blocks access via browser Back button', async ({ page }) => {
-    await page.getByRole('textbox', { name: 'Username' }).fill('Admin');
-    await page.getByRole('textbox', { name: 'Password' }).fill('admin123');
+    await page.getByRole('textbox', { name: 'Username' }).fill(orangeHrmUsername);
+    await page.getByRole('textbox', { name: 'Password' }).fill(orangeHrmPassword);
     await page.getByRole('button', { name: 'Login' }).click();
     await expect(page).toHaveURL(/.*dashboard/);
 
@@ -156,8 +158,8 @@ test.describe('OrangeHRM Login - Test Cases', () => {
     const username = page.getByRole('textbox', { name: 'Username' });
     const password = page.getByRole('textbox', { name: 'Password' });
 
-    await username.fill('Admin');
-    await password.fill('admin123');
+    await username.fill(orangeHrmUsername);
+    await password.fill(orangeHrmPassword);
     await username.clear();
     await password.clear();
 
@@ -170,8 +172,8 @@ test.describe('OrangeHRM Login - Test Cases', () => {
     const username = page.getByRole('textbox', { name: 'Username' });
     const password = page.getByRole('textbox', { name: 'Password' });
 
-    await username.fill('Admin');
-    await password.fill('admin123');
+    await username.fill(orangeHrmUsername);
+    await password.fill(orangeHrmPassword);
     await username.clear();
     await page.getByRole('button', { name: 'Login' }).click();
 
