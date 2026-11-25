@@ -1,6 +1,8 @@
 // @ts-check
 import { defineConfig, devices } from '@playwright/test';
-import 'dotenv/config';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 /**
  * @see https://playwright.dev/docs/test-configuration
