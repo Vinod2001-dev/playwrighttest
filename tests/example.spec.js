@@ -8,6 +8,11 @@ test('has title', async ({ page }) => {
   await expect(page).toHaveTitle(/Playwright/);
 });
 
+test('SauceDemo has the Swag Labs title', async ({ page }) => {
+  await page.goto('https://www.saucedemo.com/');
+  await expect(page).toHaveTitle('Swag Labs');
+});
+
 test('get started link', async ({ page }) => {
   await page.goto('https://playwright.dev/');
 

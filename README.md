@@ -2,7 +2,7 @@
 
 This repository contains end-to-end browser tests built with [Playwright Test](https://playwright.dev/) and JavaScript.
 
-The suite includes OrangeHRM login and PIM workflow tests, a DemoQA form test, and the default Playwright example tests.
+The suite includes OrangeHRM login and PIM workflows, a DemoQA form test, SauceDemo login tests, assertion examples, and Playwright website smoke tests.
 
 ## Technology
 
@@ -10,6 +10,7 @@ The suite includes OrangeHRM login and PIM workflow tests, a DemoQA form test, a
 - Playwright Test
 - JavaScript
 - Faker.js
+- dotenv for optional local environment variables
 - GitHub Actions
 
 ## Test coverage
@@ -20,20 +21,27 @@ The suite includes OrangeHRM login and PIM workflow tests, a DemoQA form test, a
 | `tests/pim.spec.js` | OrangeHRM PIM search and navigation workflow |
 | `tests/addempolye.spec.js` | Initial OrangeHRM login page smoke check |
 | `tests/demoqa.spec.js` | DemoQA text-box submission, empty submission, email validation, clearing fields, and resubmission using data from `testdata/demoqa.json` |
-| `tests/example.spec.js` | Playwright website title and navigation smoke tests |
+| `tests/loginsaucedemo.spec.js` | SauceDemo login scenarios |
+| `tests/login_demo.spec.js` | Optional Applitools demo login, enabled with environment variables |
+| `tests/assertions.spec.js` | Playwright locator and dialog assertion examples |
+| `tests/firstTest.spec.js` | Playwright website smoke test |
+| `tests/example.spec.js` | Playwright website and SauceDemo title/navigation smoke tests |
 
 Tests run against:
 
 - Chromium
 - Firefox
 - WebKit
+- Microsoft Edge
 - OrangeHRM demo application
 - DemoQA
+- SauceDemo
+- Applitools demo application (optional)
 - Playwright documentation website
 
 ## Prerequisites
 
-- Node.js 18 or later
+- Node.js 22.13 or later
 - npm
 - Internet access for external demo websites
 
@@ -66,6 +74,7 @@ Run one browser project:
 npm run test:chromium
 npm run test:firefox
 npm run test:webkit
+npm run test:msedge
 ```
 
 Run a specific test file:
@@ -123,7 +132,11 @@ Configured behavior includes:
 - Assertion timeout: `20` seconds
 - HTML reports
 - Trace, screenshot, and video capture
+- `.env` loading for local runs
+- Microsoft Edge project
 - OrangeHRM base URL: `https://opensource-demo.orangehrmlive.com`
+
+The Applitools demo login is skipped unless `RUN_DEMO_LOGIN=true`, `USERNAME`, and `PASSWORD` are set. Keep credentials in an ignored local `.env` file or GitHub Actions secrets; do not commit them.
 
 ## Reports and artifacts
 
@@ -149,7 +162,11 @@ playwrighttest/
 |   |-- pim.spec.js                  # OrangeHRM PIM workflow
 |   |-- addempolye.spec.js           # OrangeHRM smoke test
 |   |-- demoqa.spec.js               # DemoQA text-box test
-|   `-- example.spec.js              # Playwright example tests
+|   |-- loginsaucedemo.spec.js       # SauceDemo login scenarios
+|   |-- login_demo.spec.js           # Optional Applitools demo login
+|   |-- assertions.spec.js           # Assertion examples
+|   |-- firstTest.spec.js            # Playwright smoke test
+|   `-- example.spec.js              # Playwright and SauceDemo examples
 |-- playwright.config.js             # Playwright configuration
 |-- package.json                     # Dependencies and package metadata
 `-- README.md

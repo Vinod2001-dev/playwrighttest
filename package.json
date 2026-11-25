@@ -1,16 +1,18 @@
 {
   "name": "playwrighttest",
   "version": "1.0.0",
-  "description": "",
+  "description": "Playwright browser tests",
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
     "test:chromium": "playwright test --project=chromium",
     "test:firefox": "playwright test --project=firefox",
     "test:webkit": "playwright test --project=webkit",
+    "test:msedge": "playwright test --project=msedge",
     "test:ui": "playwright test --ui",
     "test:headed": "playwright test --headed",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "test:report": "playwright show-report"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +23,7 @@
     "@types/node": "^26.6.6"
   },
   "dependencies": {
-    "@faker-js/faker": "^10.6.0"
+    "@faker-js/faker": "^10.6.0",
+    "dotenv": "^18.0.10"
   }
 }
