@@ -10,6 +10,9 @@ test.describe('OrangeHRM Login - Test Cases', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(LOGIN_URL);
   });
+  test.afterEach(async ({ page }) => {
+    await page.close();
+  });
 
   // 1. Positive Login & Logout
   test('TC01: Valid username and valid password login', async ({ page }) => {
@@ -165,6 +168,7 @@ test.describe('OrangeHRM Login - Test Cases', () => {
 
     await expect(username).toHaveValue('');
     await expect(password).toHaveValue('');
+    await page.close();
   });
 
   // 17. Form State - Required Validation After Input Is Cleared
