@@ -10,6 +10,7 @@ test.describe('OrangeHRM Login - Test Cases', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto(LOGIN_URL);
   });
+  
   test.afterEach(async ({ page }) => {
     await page.close();
   });
